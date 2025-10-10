@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firestore Vanilla JS Fetch</title>
+</head>
+<body>
+  <h1>Patients</h1>
+  <ul id="data-list"></ul>
+
+  <script>
+    const projectId = "we-show-cars";
+    const collection = "patients";
+
+    // Firestore REST endpoint
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
+
+    async function fetchData() {
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        console.log(data);
+
+        // Firestore returns an array under "documents"
+        const list = document.getElementById("data-list");
+        list.innerHTML="";
+
+        if (data.documents) {
+          data.documents.forEach(doc => {
+            // Firestore stores fields in a structured format
+            const fields = doc.fields;
+
+            const name = fields?.name?.stringValue || "N/A";
+            const surname = fields?.surname?.stringValue || "N/A";
+            const address = fields?.address?.stringValue || "N/A";
+            const email = fields?.email?.stringValue || "N/A";
+
+            const li = document.createElement("li");
+            li.innerHTML =`
+            <div style="
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            width: 300px;
+            ">
+
+            <strong>Name:</strong> ${name}<br>
+            <strong>Surname: </strong> ${surname}<br>
+            <strong>Address:</strong>${address}<br>
+            <strong>Email: </strong> ${email}
+            </div>
+            `;
+            list.appendChild(li);
+          });
+        } else {
+          list.innerHTML = "<li>No patient records found.</li>";
+        }
+      } catch (err){
+        console.error("Error fetching Forestore data:", err);
+      }
+    }
+
+    fetchData();
+    </script>
+</body>
+</html>
