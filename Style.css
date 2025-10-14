@@ -1,4 +1,51 @@
-body{
-font-family: Sans, Arial;
+body {
+font-family: "Segoe UI",Sans, Arial;
+background-color: #f7f9fc;
+margin: 0;
+padding: 20px;
+}
 
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+#data-list {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.patient-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0.1);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.patient-card: hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0.15);
+}
+.patient-card strong {
+    color: #333;
+}
+.patient-card p {
+    margin: 6px 0;
+    color: #555;
+}
+
+@media (max-width: 900px) {
+    #data-list{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px){
+    #data-list {
+        grid-template-columns: 1fr;
+    }
 }
