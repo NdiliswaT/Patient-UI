@@ -1,13 +1,13 @@
 body {
 font-family: "Segoe UI",Sans, Arial;
-background-color: #f7f9fc;
+background-color: #cbe4fa;
 margin: 0;
 padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #4b04ae;
     margin-bottom: 30px;
 }
 
@@ -27,7 +27,7 @@ h1 {
     padding: 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.patient-card: hover {
+.patient-card hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0.15);
 }

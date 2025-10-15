@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Firestore Vanilla JS Fetch</title>
+  <link rel="stylesheet" href="Style.css">
 </head>
 <body>
   <h1>Patients</h1>
@@ -33,15 +34,17 @@
             const name = fields?.name?.stringValue || "N/A";
             const surname = fields?.surname?.stringValue || "N/A";
             const address = fields?.address?.stringValue || "N/A";
+            const dateOfBirth = fields?.dateOfBirth?.stringValue || "N/A";
             const email = fields?.email?.stringValue || "N/A";
+            const phone = fields?. phone?.stringValue || "N/A";
+
 
             const li = document.createElement("li");
             li.innerHTML =`
-            <strong>Name:</strong> ${name}<br>
-            <strong>Surname: </strong> ${surname}<br>
-            <strong>Address:</strong>${address}<br>
-            <strong>Email: </strong> ${email}
-            </div>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Surname: </strong> ${surname}</p>
+            <p><strong>Address:</strong>${address}</p>
+            <p><strong>Email: </strong> ${email}</p>
             `;
             list.appendChild(li);
           });
