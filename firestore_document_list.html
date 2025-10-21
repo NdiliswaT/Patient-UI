@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Firestore Vanilla JS Fetch</title>
   <link rel="stylesheet" href="Style.css">
 </head>
+
 <body>
   <h1>Patients</h1>
+  <input type="text" id="searchInput" placeholder="Search patient by name or surname..." />
   <ul id="data-list"></ul>
 
   <script>
@@ -14,6 +17,8 @@
 
     // Firestore REST endpoint
     const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
+
+    let allPatients = [];
 
     async function fetchData() {
       try {
@@ -24,39 +29,69 @@
 
         // Firestore returns an array under "documents"
         const list = document.getElementById("data-list");
-        list.innerHTML="";
+        list.innerHTML = "";
 
         if (data.documents) {
-          data.documents.forEach(doc => {
+          allPatients = data.documents.map(doc => {
             // Firestore stores fields in a structured format
             const fields = doc.fields;
-
-            const name = fields?.name?.stringValue || "N/A";
-            const surname = fields?.surname?.stringValue || "N/A";
-            const address = fields?.address?.stringValue || "N/A";
-            const dateOfBirth = fields?.dateOfBirth?.stringValue || "N/A";
-            const email = fields?.email?.stringValue || "N/A";
-            const phone = fields?. phone?.stringValue || "N/A";
-
-
-            const li = document.createElement("li");
-            li.innerHTML =`
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Surname: </strong> ${surname}</p>
-            <p><strong>Address:</strong>${address}</p>
-            <p><strong>Email: </strong> ${email}</p>
-            `;
-            list.appendChild(li);
+            return {
+              name: fields && fields.name ? fields.name.stringValue : "N/A",
+              surname: fields && fields.surname ? fields.surname.stringValue : "N/A",
+              address: fields && fields.address ? fields.address.stringValue : "N/A",
+              dateOfBirth: fields && fields.dateOfBirth ? fields.dateOfBirth.stringValue : "N/A",
+              email: fields && fields.email ? fields.email.stringValue : "N/A",
+              phone: fields && fields.phone ? fields.phone.stringValue : "N/A",
+            };
           });
+
+          renderPatients(allPatients);
         } else {
           list.innerHTML = "<li>No patient records found.</li>";
         }
-      } catch (err){
-        console.error("Error fetching Forestore data:", err);
+
+      } catch (err) {
+        console.error("Error fetching Firestore data:", err);
       }
     }
 
+    function renderPatients(patients) {
+      const list = document.getElementById("data-list");
+      list.innerHTML = "";
+
+      if (patients.length === 0) {
+        list.innerHTML = "<li>No matching patients found.</li>";
+        return;
+      }
+
+      patients.forEach(p => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+              <p><strong>Name:</strong> ${p.name}</p>
+<p><strong>Surname:</strong> ${p.surname}</p>
+<p><strong>Date of Birth:</strong> ${p.dateOfBirth}</p>
+<p><strong>Email:</strong> ${p.email}</p>
+<p><strong>Phone:</strong> ${p.phone}</p>
+<p><strong>Address:</strong> ${p.address}</p>
+            `;
+        list.appendChild(li);
+      });
+    }
+
+    // Search as you type
+    document.addEventListener("input", (e) => {
+      if (e.target.id === "searchInput") {
+        const value = e.target.value.toLowerCase();
+        const filtered = allPatients.filter(p =>
+          p.name.toLowerCase().includes(value) ||
+              p.surname.toLowerCase().includes(value)
+        );
+        renderPatients(filtered);
+      }
+    });
+
     fetchData();
-    </script>
+  </script>
 </body>
+
 </html>
