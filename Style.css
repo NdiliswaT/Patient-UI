@@ -11,6 +11,12 @@ h1 {
     margin-bottom: 30px;
 }
 
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
 #data-list {
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -62,6 +68,38 @@ h1 {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     outline: none;
 }
+
+form#addPatientForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto 40px auto;
+    max-width: 800px;
+}
+
+#addPatientForm input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 180px;
+}
+
+#addPatientForm button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transtition: 0.2s;
+}
+
+#addPatientForm button:hover {
+    background-color: #0056b3;
+}
+
 
 @media (max-width: 900px) {
     #data-list{

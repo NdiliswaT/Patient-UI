@@ -9,6 +9,15 @@
 <body>
   <h1>Patients</h1>
   <input type="text" id="searchInput" placeholder="Search patient by name or surname..." />
+  <h2>Add New Patient</h2> 
+  <form id="addPatientForm">
+    <input type="text" id="nameInput" placeholder="Name" required />
+    <input type="text" id="surnameInput" placeholder="Surname" required />
+    <input type="text" id="addressInput" placeholder="Address" required />
+    <input type="text" id="emailInput" placeholder="Email" required />
+    <input type="text" id="phoneInput" placeholder="Phone" required />
+    <button type="submit">Add Patient</button>
+  </form>
   <ul id="data-list"></ul>
 
   <script>
@@ -90,6 +99,51 @@
       }
     });
 
+    document.getElementById("addPatientForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("nameInput").value.trim();
+const surname = document.getElementById("surnameInput").value.trim();
+const address = document.getElementById("addressInput").value.trim();
+const email = document.getElementById("emailInput").value.trim();
+const phone = document.getElementById("phoneInput").value.trim();
+
+const newPatient = {
+  fields: {
+    name: { stringValue: name},
+    surname: { stringValue: surname},
+    address: { stringValue: address},
+    email: { stringValue: email},
+    phone: { stringValue: phone}
+  }
+};
+
+try { 
+
+  // Send POST request to Firestore
+  const res =await fetch(
+     `https://firestore.googleapis.com/v1/projects/we-show-cars/databases/(default)/documents/patients`,
+     {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPatient)
+     }
+  );
+
+  if (res.ok) {
+    console.log("Patient added successfully!");
+    await fetchData();
+    e.target.reset();
+  } else{
+    const errorData = await res.json();
+    console.error("Failed to add patient:", errorData);
+    alert("Error adding patient. Check console for details.");
+  }
+} catch (err) {
+  console.error("Network error:", err);
+alert("Unable to connect to Firestore.");
+}
+    });
     fetchData();
   </script>
 </body>
